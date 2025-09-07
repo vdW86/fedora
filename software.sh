@@ -25,7 +25,7 @@ vlc \
 qutebrowser \
 wayland-devel \
 polkit \
-sddm
+sddm \
+xdg-user-dirs
 
 sudo systemctl enable sddm.service
-sudo reboot
