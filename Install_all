@@ -1,0 +1,251 @@
+#Install script all
+
+
+#!/usr/bin/env bash
+
+# Basis mappen aanmaken
+mkdir -p ~/.config/{hypr,waybar,rofi,dunst,foot}
+
+# Hyprland config
+cat > ~/.config/hypr/hyprland.conf << 'EOF'
+#####################################
+# Hyprland minimal config (starter) #
+#####################################
+
+# Monitor instellingen (pas aan aan je resolutie!)
+monitor=,preferred,auto,1
+
+# Super-toets (meestal "Windows-toets")
+$mod = SUPER
+
+# Terminal, browser, file manager
+$terminal = kitty
+$browser  = firefox
+$fileman  = thunar
+
+# Keybindings
+bind = CTRL_ALT,T, exec, $terminal
+bind = $mod, B, exec, $browser
+bind = $mod, E, exec, $fileman
+bind = $mod, Q, killactive
+bind = $mod, F, fullscreen
+bind = $mod, SPACE, togglefloating
+bind = $mod, D, exec, rofi -show drun
+bind = $mod, P, exec, grim -g "$(slurp)" ~/Pictures/screenshot.png
+bind = $mod, L, exec, loginctl terminate-user $USER
+
+# Workspaces (1–10 op Super + cijfer)
+bind = $mod, 1, workspace, 1
+bind = $mod, 2, workspace, 2
+bind = $mod, 3, workspace, 3
+bind = $mod, 4, workspace, 4
+bind = $mod, 5, workspace, 5
+bind = $mod, 6, workspace, 6
+bind = $mod, 7, workspace, 7
+bind = $mod, 8, workspace, 8
+bind = $mod, 9, workspace, 9
+bind = $mod, 0, workspace, 10
+
+# Muziek/media (werkt met playerctl)
+bind = , XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%
+bind = , XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -5%
+bind = , XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle
+bind = , XF86MonBrightnessUp, exec, brightnessctl set +10%
+bind = , XF86MonBrightnessDown, exec, brightnessctl set 10%-
+
+# Opstart programma’s
+exec-once = waybar &
+exec-once = dunst &
+exec-once = nm-applet &
+exec-once = swaybg -i ~/Afbeeldingen/tiger1.jpg -m fill   #-i=pad -m fill=vullend kan ook stretch,center of tile 
+
+# Look & feel
+general {
+    gaps_in = 5
+    gaps_out = 10
+    border_size = 2
+    col.active_border = rgb(89b4fa)
+    col.inactive_border = rgb(45475a)
+}
+
+decoration {
+    rounding = 6
+#    blur = yes
+}
+
+animations {
+    enabled = yes
+    bezier = myBezier, 0.05, 0.9, 0.1, 1.05
+    animation = windows, 1, 7, myBezier
+    animation = border, 1, 10, default
+    animation = fade, 1, 7, default
+    animation = workspaces, 1, 6, default
+}
+EOF
+
+# Waybar config
+cat > ~/.config/waybar/config.jsonc << 'EOF'
+{
+  "layer": "top",
+  "position": "top",
+  "modules-left": ["hyprland/workspaces"],
+  "modules-center": ["clock"],
+  "modules-right": ["cpu", "memory", "pulseaudio", "network", "custom/battery"],
+
+  "clock": { "format": " {:%H:%M  %d-%m-%Y}", "tooltip": false },
+  "cpu": { "format": " {usage:2}%", "tooltip": false },
+  "memory": { "format": " {used:0.1f}G/{total:0.1f}G", "tooltip": false },
+  "pulseaudio": {
+    "format": "{icon} {volume:2}%",
+    "format-muted": " Muted",
+    "format-icons": ["", "", ""],
+    "tooltip": false
+  },
+  "network": {
+    "format-wifi": " {essid} ({signalStrength}%)",
+    "format-ethernet": " {ifname}",
+    "format-disconnected": " Disconnected",
+    "tooltip": false
+  },
+
+  "custom/battery": {
+    "exec": "~/.config/waybar/battery_status.sh",
+    "interval": 1,
+  }
+}
+EOF
+
+cat > ~/.config/waybar/style.css << 'EOF'
+* {
+    font-family: "FiraCode Nerd Font", monospace;
+    font-size: 12pt;
+    color: #cdd6f4;
+}
+
+window#waybar {
+    background-color: rgba(30, 30, 46, 0.9);
+    border-bottom: 2px solid #89b4fa;
+}
+
+#workspaces button {
+    padding: 0 6px;
+    margin: 0 3px;
+    border-radius: 6px;
+    background-color: #45475a;
+    color: #cdd6f4;
+}
+
+#workspaces button.active {
+    background-color: #89b4fa;
+    color: #1e1e2e;
+}
+
+#clock,
+#cpu,
+#memory,
+#pulseaudio,
+#network,
+#battery {
+    padding: 0 10px;
+}
+EOF
+
+# Rofi config
+cat > ~/.config/rofi/config.rasi << 'EOF'
+configuration {
+    modi: "drun,run";
+    font: "FiraCode Nerd Font 12";
+    show-icons: true;
+    icon-theme: "Papirus";
+    terminal: "foot";
+    drun-display-format: "{icon} {name}";
+}
+* {
+    background: #1e1e2e;
+    background-alt: #313244;
+    foreground: #cdd6f4;
+    selected: #89b4fa;
+    active: #a6e3a1;
+    urgent: #f38ba8;
+    border-color: #89b4fa;
+}
+window {
+    transparency: "real";
+    border: 2px;
+    border-radius: 8px;
+    padding: 20px;
+}
+mainbox { spacing: 10px; }
+listview { spacing: 5px; fixed-height: 0; }
+element { padding: 6px; border-radius: 6px; }
+element selected { background-color: @selected; foreground: #1e1e2e; }
+EOF
+
+# Dunst config
+cat > ~/.config/dunst/dunstrc << 'EOF'
+[global]
+    font = FiraCode Nerd Font 11
+    frame_width = 2
+    separator_height = 2
+    padding = 10
+    horizontal_padding = 10
+    transparency = 0
+    corner_radius = 6
+    monitor = 0
+    follow = mouse
+    indicate_hidden = yes
+    shrink = no
+    sort = yes
+[urgency_low]
+    background = "#313244"
+    foreground = "#cdd6f4"
+    frame_color = "#89b4fa"
+[urgency_normal]
+    background = "#1e1e2e"
+    foreground = "#cdd6f4"
+    frame_color = "#89b4fa"
+[urgency_critical]
+    background = "#f38ba8"
+    foreground = "#1e1e2e"
+    frame_color = "#f38ba8"
+EOF
+
+# Foot config
+cat > ~/.config/foot/foot.ini << 'EOF'
+[main]
+font=FiraCode Nerd Font:size=12
+term=foot
+[colors]
+background=1e1e2e
+foreground=cdd6f4
+selection-foreground=1e1e2e
+selection-background=89b4fa
+EOF
+
+#scripts schrijven
+#.config/waybar/battery_status.sh
+cat > ~/.config/waybar/battery_status.sh << 'EOF'
+#!/bin/bash
+BATT_PATH="/sys/class/power_supply/BAT0"
+
+if [ -f "$BATT_PATH/capacity" ]; then
+    CAP=$(cat "$BATT_PATH/capacity")
+    STATUS=$(cat "$BATT_PATH/status")
+
+    if [ "$STATUS" = "Charging" ]; then
+        ICON="⚡"
+    elif [ "$STATUS" = "Full" ]; then
+        ICON="✔"
+    else
+        ICON="🔋"
+    fi
+
+    echo "$ICON $CAP%"
+else
+    echo "N/A"
+fi
+EOF
+
+chmod +x ~/.config/waybar/battery_status.sh
+
+echo "✅ Configs geïnstalleerd! Start Hyprland en je setup is klaar."
