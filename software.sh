@@ -24,5 +24,5 @@ speedtest-cli \
 vlc \
 qutebrowser \
 wayland-devel \
-polkit
+polkit \
 sddm
