@@ -249,3 +249,5 @@ EOF
 chmod +x ~/.config/waybar/battery_status.sh
 
 echo "✅ Configs geïnstalleerd! Start Hyprland en je setup is klaar."
+
+sudo reboot
