@@ -26,3 +26,6 @@ qutebrowser \
 wayland-devel \
 polkit \
 sddm
+
+sudo systemctl enable sddm.service
+sudo reboot
