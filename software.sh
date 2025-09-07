@@ -1,7 +1,7 @@
  ###################
 ##### windowmanager & utils
 ###################
-sudo dnf install hyprland waybar dunst xdg-desktop-portal-hyprland xdg-desktop-portal-gtk swaybg pactl brightnessctl wayland-devel polkit sddm xdg-user-dirs 
+sudo dnf install hyprland waybar dunst xdg-desktop-portal-hyprland xdg-desktop-portal-gtk swaybg pactl brightnessctl wayland-devel polkit sddm xdg-user-dirs-gtk 
 ###################
 ##### Browsers
 ###################
@@ -19,7 +19,7 @@ sudo dnf install network-manager-applet NetworkManager-gnome bluez bluez-tools b
 ###################
 #### Media
 ###################
-sudo dnf install gimp gimp-heif-plugin pinta cheese vlc swayimg 
+sudo dnf install gimp pinta cheese vlc swayimg 
 ###################
 #### Fonts
 ###################
