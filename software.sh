@@ -1,4 +1,4 @@
-sudo dnf install \ 
+sudo dnf install  
 ###################
 ##### windowmanager & utils
 ###################
