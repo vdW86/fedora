@@ -29,3 +29,4 @@ sddm \
 xdg-user-dirs
 
 sudo systemctl enable sddm.service
+xdg-users-dirs-update
