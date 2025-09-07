@@ -57,6 +57,7 @@ bind = , XF86MonBrightnessDown, exec, brightnessctl set 10%-
 exec-once = waybar &
 exec-once = dunst &
 exec-once = nm-applet &
+exec-once = blueman-applet &
 exec-once = swaybg -i ~/Afbeeldingen/tiger1.jpg -m fill   #-i=pad -m fill=vullend kan ook stretch,center of tile 
 
 # Look & feel
