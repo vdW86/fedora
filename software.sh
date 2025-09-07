@@ -25,3 +25,4 @@ vlc \
 qutebrowser \
 wayland-devel \
 polkit
+sddm
